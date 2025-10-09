@@ -26,6 +26,11 @@ export const UI_LABELS = {
     CLEAR_HISTORY: "مسح السجل",
     CLEAR_HISTORY_CONFIRM: "هل أنت متأكد أنك تريد مسح كل سجل التحليلات؟ لا يمكن التراجع عن هذا الإجراء.",
     VIEW_ANALYSIS_PROMPT: "اختر تحليلًا من القائمة لعرضه.",
+    SHARE_ANALYSIS: "مشاركة التحليل",
+    COPY_TEXT: "نسخ النص",
+    SAVE_TO_DRIVE: "حفظ في Google Drive",
+    COPIED_SUCCESS: "تم النسخ!",
+    FEATURE_COMING_SOON: "قريبًا...",
 };
 
 export const LOADING_MESSAGES = [

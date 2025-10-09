@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { HistoryItem } from '../types';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -11,9 +10,16 @@ const HistoryPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
 
   useEffect(() => {
-    const storedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (storedHistory) {
-      setHistory(JSON.parse(storedHistory));
+    try {
+        const storedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+        if (storedHistory) {
+          setHistory(JSON.parse(storedHistory));
+        }
+    } catch (e) {
+        console.error("Failed to parse history from localStorage:", e);
+        // Clear corrupted data to prevent future errors
+        localStorage.removeItem(HISTORY_STORAGE_KEY);
+        setHistory([]);
     }
   }, []);
 
@@ -46,8 +52,8 @@ const HistoryPage: React.FC = () => {
         </button>
       </div>
       <div className="flex flex-col md:flex-row gap-6" style={{ minHeight: '60vh' }}>
-        <aside className="md:w-1/3 lg:w-1/4">
-          <ul className="space-y-2 h-full overflow-y-auto pr-2 max-h-[60vh]">
+        <aside className="md:w-1/3 lg:w-1/4 overflow-y-auto max-h-[60vh] pr-2">
+          <ul className="space-y-2">
             {history.map(item => (
               <li key={item.id}>
                 <button

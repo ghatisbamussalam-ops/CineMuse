@@ -27,6 +27,7 @@ import Spinner from './components/Spinner';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import PreferenceSection from './components/PreferenceSection';
 import HistoryPage from './components/HistoryPage';
+import ShareOptions from './components/ShareOptions';
 
 const HISTORY_STORAGE_KEY = 'cineMuseHistory';
 const MAX_HISTORY_ITEMS = 50;
@@ -240,7 +241,10 @@ function App() {
 
               {analysisResult && (
                 <section className="bg-gray-800 p-8 rounded-lg shadow-2xl mt-12">
-                  <h2 className="text-3xl font-bold text-cyan-300 mb-6 border-b-2 border-cyan-700 pb-3">{UI_LABELS.RESULT_TITLE}</h2>
+                  <div className="flex justify-between items-center mb-6 border-b-2 border-cyan-700 pb-3">
+                    <h2 className="text-3xl font-bold text-cyan-300">{UI_LABELS.RESULT_TITLE}</h2>
+                    <ShareOptions analysisText={analysisResult} />
+                  </div>
                   <MarkdownRenderer content={analysisResult} />
                 </section>
               )}
