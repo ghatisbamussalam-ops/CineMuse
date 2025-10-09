@@ -1,4 +1,3 @@
-
 export enum WorkType {
   Auto = 'تلقائي',
   Film = 'فيلم',
@@ -38,7 +37,7 @@ export enum GeoContext {
 
 export enum Appendix {
     SimilarWorks = 'قائمة أعمال مشابهة',
-    References = 'مراجع مقترحة للقراءة',
+    References = 'المراجع والمصادر',
     DiscussionQuestions = 'أسئلة نقاشية للجمهور',
 }
 
@@ -53,4 +52,11 @@ export interface AnalysisPreferences {
   hideSpoilers: boolean;
   includeQuotes: boolean;
   appendices: Appendix[];
+}
+
+export interface HistoryItem {
+  id: number;
+  workName: string;
+  analysisResult: string;
+  timestamp: string;
 }

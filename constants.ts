@@ -19,6 +19,13 @@ export const UI_LABELS = {
     ERROR_MESSAGE_TITLE: "حدث خطأ",
     ERROR_MESSAGE_SUGGESTION: "يرجى المحاولة مرة أخرى. تأكد من أن الاسم الذي أدخلته واضح.",
     RESULT_TITLE: "نتائج التحليل:",
+    VIEW_ANALYZER: "المحلّل",
+    VIEW_HISTORY: "السجل",
+    HISTORY_TITLE: "سجل التحليلات",
+    NO_HISTORY: "لا يوجد سجل تحليلات حتى الآن. قم بإنشاء تحليل جديد ليظهر هنا.",
+    CLEAR_HISTORY: "مسح السجل",
+    CLEAR_HISTORY_CONFIRM: "هل أنت متأكد أنك تريد مسح كل سجل التحليلات؟ لا يمكن التراجع عن هذا الإجراء.",
+    VIEW_ANALYSIS_PROMPT: "اختر تحليلًا من القائمة لعرضه.",
 };
 
 export const LOADING_MESSAGES = [
