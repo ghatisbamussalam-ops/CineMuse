@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { UI_LABELS } from '../constants';
+import Spinner from './Spinner';
 
 const ShareIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+    <svg xmlns="http://www.w.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
     </svg>
 );
@@ -20,14 +21,22 @@ const GoogleDriveIcon = () => (
     </svg>
 );
 
+const PdfIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v4.586A1 1 0 0115.414 9.5l-2.914 2.914A1 1 0 0112 13.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0v4.586l2.5-2.5V4H6zM12 13.414L14.586 11H14V5h-2v8.414z" clipRule="evenodd" />
+        <path d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" />
+    </svg>
+);
 
 interface ShareOptionsProps {
     analysisText: string;
+    onExportPDF: () => Promise<void>;
 }
 
-const ShareOptions: React.FC<ShareOptionsProps> = ({ analysisText }) => {
+const ShareOptions: React.FC<ShareOptionsProps> = ({ analysisText, onExportPDF }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -50,6 +59,13 @@ const ShareOptions: React.FC<ShareOptionsProps> = ({ analysisText }) => {
                 setIsOpen(false);
             }, 1500);
         });
+    };
+    
+    const handleExport = async () => {
+        setIsExporting(true);
+        await onExportPDF();
+        setIsExporting(false);
+        setIsOpen(false);
     };
 
     return (
@@ -75,7 +91,17 @@ const ShareOptions: React.FC<ShareOptionsProps> = ({ analysisText }) => {
                                 <span>{copied ? UI_LABELS.COPIED_SUCCESS : UI_LABELS.COPY_TEXT}</span>
                             </button>
                         </li>
-                        <li className="relative group">
+                        <li>
+                            <button
+                                onClick={handleExport}
+                                disabled={isExporting}
+                                className="w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-wait"
+                            >
+                                {isExporting ? <Spinner /> : <PdfIcon />}
+                                <span>{isExporting ? "جاري التصدير..." : UI_LABELS.EXPORT_TO_PDF}</span>
+                            </button>
+                        </li>
+                        <li className="relative group border-t border-gray-600 mt-1 pt-1">
                            <button
                                 disabled
                                 className="w-full flex items-center gap-3 px-3 py-2 rounded-md cursor-not-allowed opacity-50"

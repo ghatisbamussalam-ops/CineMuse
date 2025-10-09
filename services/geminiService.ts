@@ -1,6 +1,7 @@
-
 import { GoogleGenAI } from "@google/genai";
 import { AnalysisPreferences } from '../types';
+
+const API_KEY = "AIzaSyB2taTxH-jnTuekYWrRFNDBki7Ie0GtmaM";
 
 function buildPrompt(preferences: AnalysisPreferences): string {
   const {
@@ -68,7 +69,7 @@ function buildPrompt(preferences: AnalysisPreferences): string {
 }
 
 export const generateAnalysis = async (preferences: AnalysisPreferences): Promise<string> => {
-    if (!process.env.API_KEY) {
+    if (!API_KEY) {
         throw new Error("API key not found. Please set the API_KEY environment variable.");
     }
     
@@ -76,7 +77,7 @@ export const generateAnalysis = async (preferences: AnalysisPreferences): Promis
         throw new Error("Work name cannot be empty.");
     }
 
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: API_KEY });
     
     const prompt = buildPrompt(preferences);
 
