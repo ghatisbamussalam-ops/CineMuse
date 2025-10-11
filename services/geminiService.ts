@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { AnalysisPreferences } from '../types';
 
-const API_KEY = "AIzaSyB2taTxH-jnTuekYWrRFNDBki7Ie0GtmaM";
+const API_KEY = process.env.API_KEY;
 
 function buildPrompt(preferences: AnalysisPreferences): string {
   const {
