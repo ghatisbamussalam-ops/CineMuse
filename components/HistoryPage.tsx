@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HistoryItem } from '../types';
 import { UI_LABELS } from '../constants';
@@ -25,25 +26,26 @@ interface HistoryPageProps {
 const HistoryPage: React.FC<HistoryPageProps> = ({ history, onView, onDelete }) => {
     if (history.length === 0) {
         return (
-            <div className="text-center py-20 text-gray-500 bg-gray-800 rounded-lg">
-                <p className="text-lg">{UI_LABELS.EMPTY_HISTORY}</p>
+            <div className="text-center py-20 text-gray-400 bg-gray-800/40 backdrop-blur-md rounded-2xl border border-gray-700/50">
+                <svg className="w-16 h-16 mx-auto mb-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                <p className="text-lg font-medium">{UI_LABELS.EMPTY_HISTORY}</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-3 animate-fade-in">
             {history.map((item) => (
-                <div key={item.id} className="bg-gray-800 p-4 rounded-lg flex justify-between items-center transition hover:bg-gray-700/50">
+                <div key={item.id} className="group bg-gray-800/50 backdrop-blur-sm p-5 rounded-xl border border-gray-700/50 flex justify-between items-center transition-all hover:bg-gray-700/60 hover:border-cyan-500/30 hover:shadow-lg">
                     <div>
-                        <h3 className="font-bold text-cyan-400 text-lg">{item.workName}</h3>
-                        <p className="text-sm text-gray-400">{item.timestamp}</p>
+                        <h3 className="font-bold text-gray-200 group-hover:text-cyan-300 text-lg transition-colors">{item.workName}</h3>
+                        <p className="text-xs text-gray-500 mt-1">{item.timestamp}</p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
                         <button 
                             onClick={() => onView(item)} 
                             title={UI_LABELS.VIEW_ANALYSIS}
-                            className="p-2 rounded-full text-gray-400 hover:bg-gray-600 hover:text-cyan-300 transition"
+                            className="p-2.5 rounded-full bg-gray-700/50 text-gray-400 hover:bg-cyan-600 hover:text-white transition-all shadow-sm"
                             aria-label={UI_LABELS.VIEW_ANALYSIS}
                         >
                             <ViewIcon />
@@ -51,7 +53,7 @@ const HistoryPage: React.FC<HistoryPageProps> = ({ history, onView, onDelete }) 
                         <button 
                             onClick={() => onDelete(item.id)} 
                             title={UI_LABELS.DELETE_ANALYSIS}
-                            className="p-2 rounded-full text-gray-400 hover:bg-gray-600 hover:text-red-400 transition"
+                            className="p-2.5 rounded-full bg-gray-700/50 text-gray-400 hover:bg-red-500 hover:text-white transition-all shadow-sm"
                             aria-label={UI_LABELS.DELETE_ANALYSIS}
                         >
                             <DeleteIcon />

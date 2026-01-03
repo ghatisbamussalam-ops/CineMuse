@@ -1,23 +1,13 @@
+
 export enum WorkType {
   Auto = 'تلقائي',
   Film = 'فيلم',
+  Series = 'مسلسل',
   Song = 'أغنية',
+  Book = 'كتاب',
 }
 
-export enum AnalysisAngle {
-  Philosophical = 'فلسفي',
-  Psychological = 'نفسي',
-  Social = 'اجتماعي',
-  Artistic = 'فني/جمالي',
-  Semiotic = 'سيميائي (تحليل رموز)',
-  Production = 'إنتاجي/صناعي',
-}
-
-export enum Depth {
-  Concise = 'مختصر',
-  Medium = 'متوسط',
-  InDepth = 'متعمق',
-}
+// Depth Enum removed in favor of explicit word count
 
 export enum Technicality {
   Simple = 'مبسّط للجمهور العام',
@@ -44,8 +34,8 @@ export enum Appendix {
 export interface AnalysisPreferences {
   workName: string;
   workType: WorkType;
-  analysisAngles: AnalysisAngle[];
-  depth: Depth;
+  analysisAngles: string[];
+  wordCount: number; // Replaces depth
   technicality: Technicality;
   writingStyle: WritingStyle;
   geoContext: GeoContext;

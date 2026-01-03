@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { AnalysisPreferences } from '../types';
 
@@ -8,7 +9,7 @@ function buildPrompt(preferences: AnalysisPreferences): string {
     workName,
     workType,
     analysisAngles,
-    depth,
+    wordCount,
     technicality,
     writingStyle,
     geoContext,
@@ -17,25 +18,19 @@ function buildPrompt(preferences: AnalysisPreferences): string {
     appendices,
   } = preferences;
 
-  const depthMap = {
-      'مختصر': 'حوالي 150-250 كلمة',
-      'متوسط': 'حوالي 400-700 كلمة',
-      'متعمق': 'حوالي 900-1300 كلمة',
-  };
-
   return `
-أنت ناقد سينمائي وموسيقي وخبير ثقافي مرموق. مهمتك هي تقديم تحليل عميق باللغة العربية الفصيحة للعمل التالي: "${workName}".
+أنت ناقد سينمائي وأدبي وموسيقي وخبير ثقافي مرموق. مهمتك هي تقديم تحليل عميق واستثنائي باللغة العربية الفصيحة للعمل التالي: "${workName}".
 
 يجب أن تلتزم التزامًا صارمًا بالتفضيلات التالية التي حددها المستخدم:
 
-- **نوع العمل**: ${workType}. (إذا كان الخيار "تلقائي"، حدد النوع بنفسك بناءً على الاسم. إذا لم تكن متأكدًا، افترض النوع الأكثر احتمالاً وقدم تحليلك بناءً عليه دون طرح أسئلة).
-- **زوايا التحليل المختارة**: ${analysisAngles.join('، ')}. ركز تحليلك على هذه الزوايا بشكل أساسي.
-- **عمق التحليل**: ${depth} (${depthMap[depth]}).
+- **نوع العمل**: ${workType}. (إذا كان الخيار "تلقائي"، حدد النوع بنفسك بناءً على الاسم).
+- **زوايا التحليل المختارة**: ${analysisAngles.join('، ')}. ركز تحليلك على هذه الزوايا بشكل أساسي وقدم رؤى غير تقليدية.
+- **طول المقال المستهدف**: حوالي ${wordCount} كلمة. حاول الالتزام بهذا الطول لإشباع الموضوع حقه دون حشو أو إطالة غير مبررة.
 - **الدرجة التقنية**: ${technicality}.
 - **الأسلوب الكتابي**: ${writingStyle}.
 - **السياق الجغرافي/الثقافي**: ${geoContext}. (أعطِ هذا السياق أهمية خاصة في تحليلك إن كان "عربي" أو "يمني").
-- **إخفاء حرق الأحداث (Spoilers)**: ${hideSpoilers ? 'مفعّل. تجنب تمامًا كشف أي نقاط حاسمة في الحبكة، أو ضع تحذيرًا واضحًا جدًا قبل أي فقرة قد تحتوي على حرق.' : 'غير مفعّل.'}
-- **إدراج اقتباسات**: ${includeQuotes ? 'مفعّل. أدرج اقتباسات قصيرة (لا تزيد عن 20 كلمة) من الحوارات أو الكلمات إن توفرت وكانت ذات صلة.' : 'غير مفعّل.'}
+- **إخفاء حرق الأحداث (Spoilers)**: ${hideSpoilers ? 'مفعّل. تجنب تمامًا كشف أي نقاط حاسمة في الحبكة.' : 'غير مفعّل.'}
+- **إدراج اقتباسات**: ${includeQuotes ? 'مفعّل. أدرج اقتباسات أيقونية.' : 'غير مفعّل.'}
 - **ملاحق إضافية مطلوبة**: ${appendices.length > 0 ? appendices.join('، ') : 'لا يوجد'}.
 
 **هيكل الإخراج المطلوب:**
@@ -50,6 +45,24 @@ function buildPrompt(preferences: AnalysisPreferences): string {
 7.  **أثر الفيلم على السينما والجمهور**
 8.  **ملاحق** (إذا طُلبت)
 
+إذا كان العمل **مسلسلاً**، استخدم الهيكل التالي بعناوين واضحة:
+1.  **قصة المسلسل وعالمه الدرامي**
+2.  **تحليل تطور الشخصيات عبر المواسم**
+3.  **البناء السردي والإيقاع (Pacing)**
+4.  **الثيمات الفلسفية والاجتماعية** (بناءً على الزوايا المختارة)
+5.  **الأسلوب الإخراجي والبصري**
+6.  **الأثر الثقافي ومكانته في تاريخ التلفزيون**
+7.  **ملاحق** (إذا طُلبت)
+
+إذا كان العمل **كتابًا**، استخدم الهيكل التالي بعناوين واضحة:
+1.  **ملخص الكتاب وسياقه الأدبي/الفكري**
+2.  **تحليل الأفكار المركزية والثيمات**
+3.  **البناء السردي (للروايات) أو التسلسل المنطقي (للكتب الفكرية)**
+4.  **تحليل الشخصيات (للأعمال الروائية) أو المنهجية والحجج (للكتب الفكرية والعملية)**
+5.  **الأبعاد الفلسفية أو العملية** (بناءً على الزوايا المختارة)
+6.  **الأثر الثقافي ومكانة الكتاب**
+7.  **ملاحق** (إذا طُلبت)
+
 إذا كان العمل **أغنية**، استخدم الهيكل التالي بعناوين واضحة:
 1.  **سياق الأغنية وخلفيتها الفنية**
 2.  **تحليل الكلمات والرموز الشعرية** (مع مراعاة مستوى التقنية)
@@ -59,16 +72,19 @@ function buildPrompt(preferences: AnalysisPreferences): string {
 6.  **ملاحق** (إذا طُلبت)
 
 **متطلبات الجودة والأسلوب:**
--   **اللغة**: استخدم لغة عربية فصيحة، أنيقة، وسلسة.
--   **المنهجية**: ميّز بوضوح بين **الحقائق الموضوعية** و**التأويلات النقدية** (استخدم عبارات مثل "من منظور سيميائي..." أو "يمكن تأويل هذا المشهد على أنه...").
--   **عدم اليقين**: إذا كانت المعلومات غير متوفرة أو غير مؤكدة، صرّح بذلك.
--   **الناتج**: يجب أن يكون الناتج بالكامل بصيغة Markdown، باستخدام ## للعناوين الرئيسية و ### للعناوين الفرعية.
+-   **اللغة**: استخدم لغة عربية فصيحة، بليغة، وثرية بالمفردات.
+-   **المنهجية**: قدم تحليلاً نوعياً يتجاوز السطحية.
+-   **التنسيق**: استخدم Markdown بذكاء. استخدم Blockquotes (>) للاقتباسات أو النقاط المهمة.
+-   **الإبداع**: استخدم قدراتك التحليلية العالية (Gemini 3 Pro) لربط النقاط التي قد تغيب عن المشاهد العادي.
 
-في النهاية، أضف قسمًا أخيرًا بعنوان **"## الإعدادات المُطبّقة"** ولخّص فيه بوضوح كل التفضيلات التي اتبعتها في هذا التحليل.
+في النهاية، أضف قسمًا أخيرًا بعنوان **"## الإعدادات المُطبّقة"** ولخّص فيه بوضوح كل التفضيلات التي اتبعتها.
 `;
 }
 
-export const generateAnalysis = async (preferences: AnalysisPreferences): Promise<string> => {
+export const streamAnalysis = async (
+    preferences: AnalysisPreferences,
+    onChunk: (text: string) => void
+): Promise<string> => {
     if (!API_KEY) {
         throw new Error("API key not found. Please set the API_KEY environment variable.");
     }
@@ -82,14 +98,27 @@ export const generateAnalysis = async (preferences: AnalysisPreferences): Promis
     const prompt = buildPrompt(preferences);
 
     try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
+        const response = await ai.models.generateContentStream({
+            model: 'gemini-3-pro-preview',
             contents: prompt,
+            config: {
+                // Adjust thinking budget based on requested word count to ensure enough tokens
+                thinkingConfig: { thinkingBudget: preferences.wordCount > 1500 ? 2048 : 1024 }
+            }
         });
 
-        return response.text;
+        let fullText = '';
+        for await (const chunk of response) {
+            const text = chunk.text;
+            if (text) {
+                fullText += text;
+                onChunk(fullText);
+            }
+        }
+        return fullText;
+
     } catch (error) {
         console.error("Error calling Gemini API:", error);
-        throw new Error("Failed to get analysis from the service. The model may have blocked the request.");
+        throw new Error("Failed to get analysis. Please try again later.");
     }
 };
